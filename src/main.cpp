@@ -26,8 +26,6 @@ void setup() {
   digitalWrite(LED_BUILTIN, HIGH);
   ///////////////////// treat first hand /////////////////////
   Serial.println("Started treating first hand");
-  // control speed
-  analogWrite(ENA, 0);
   // control direction
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
@@ -45,11 +43,19 @@ void setup() {
   Serial.print((TREATMENT_DELAY_FOR_EACH_HAND / 1000) / 60);
   Serial.println(" minutes...");
   delay(TREATMENT_DELAY_FOR_EACH_HAND);
+  // decrement speed gradually
+  for(int i = 255; i < 0; i--) {
+    outputVoltage = (i * REFERENCE_VOLTAGE) / 255;
+    Serial.print("Voltage: ");
+    Serial.print(outputVoltage);
+    Serial.print(" V  |  PWM: ");
+    Serial.println(i);
+    analogWrite(ENA, i);
+    delay(300);
+  }
   Serial.println("Finished treating first hand");
   ///////////////////// treat second hand /////////////////////
   Serial.println("Started treating second hand");
-  // control speed
-  analogWrite(ENA, 0);
   // control direction
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, HIGH);
@@ -67,7 +73,16 @@ void setup() {
   Serial.print((TREATMENT_DELAY_FOR_EACH_HAND / 1000) / 60);
   Serial.println(" minutes...");
   delay(TREATMENT_DELAY_FOR_EACH_HAND);
-  analogWrite(ENA, 0);
+  // decrement speed gradually
+  for(int i = 255; i < 0; i--) {
+    outputVoltage = (i * REFERENCE_VOLTAGE) / 255;
+    Serial.print("Voltage: ");
+    Serial.print(outputVoltage);
+    Serial.print(" V  |  PWM: ");
+    Serial.println(i);
+    analogWrite(ENA, i);
+    delay(300);
+  }
   Serial.println("Finished treating second hand");
   ///////////////////// session ended /////////////////////
   Serial.println("Session ended");
